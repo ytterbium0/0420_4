@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>健康知識大挑戰</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; padding: 20px; background-color: #f0f4f8; }
+        #container { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%; max-width: 500px; text-align: center; }
+        .btn { display: block; width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; background: #fff; transition: 0.3s; }
+        .btn:hover { background: #eef6ff; border-color: #007bff; }
+    </style>
+</head>
+<body>
+
+<div id="container">
+    <h2 id="question">載入中...</h2>
+    <div id="options"></div>
+    <div id="result"></div>
+</div>
+
+<script>
+    const quizData = [
+        { q: "成年人每天建議至少喝多少水？", a: ["1000cc", "2000cc", "5000cc"], correct: 1 },
+        { q: "下列哪種脂肪被認為對心臟健康較好？", a: ["反式脂肪", "飽和脂肪", "不飽和脂肪"], correct: 2 },
+        { q: "規律運動有助於降低哪種疾病的風險？", a: ["感冒", "第二型糖尿病", "近視"], correct: 1 },
+        { q: "健康的睡眠建議成年人每晚睡眠時間為？", a: ["4-5小時", "7-9小時", "12小時以上"], correct: 1 }
+    ];
+
+    let currentIdx = 0;
+    let score = 0;
+
+    function loadQuestion() {
+        if (currentIdx < quizData.length) {
+            const data = quizData[currentIdx];
+            document.getElementById('question').innerText = data.q;
+            const ops = document.getElementById('options');
+            ops.innerHTML = '';
+            data.a.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'btn';
+                btn.innerText = opt;
+                btn.onclick = () => {
+                    if (i === data.correct) score++;
+                    currentIdx++;
+                    loadQuestion();
+                };
+                ops.appendChild(btn);
+            });
+        } else {
+            document.getElementById('container').innerHTML = `<h2>測驗結束！</h2><p>您的最終得分：${score} / ${quizData.length}</p><button class="btn" onclick="location.reload()">重新開始</button>`;
+        }
+    }
+    loadQuestion();
+</script>
+</body>
+</html>
